@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "929155263640",
+    "project_id": "bmi-health-measure",
+    "storage_bucket": "bmi-health-measure.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929155263640:android:f9818908e5414ce60734ed",
+        "android_client_info": {
+          "package_name": "student.inti.bmi_health_measure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBsLPrdyhb9-hVRvvmjGJa8DQ1FuAzdq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
