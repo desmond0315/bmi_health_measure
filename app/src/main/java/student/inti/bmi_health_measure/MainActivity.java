@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        databaseRef = database.getReference("users");
+        databaseRef = database.getReference("bmidata");
 
         weightInput = findViewById(R.id.weightInput);
         heightInput = findViewById(R.id.heightInput);
