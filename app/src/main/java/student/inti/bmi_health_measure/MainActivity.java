@@ -76,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
         Map<String, Object> userData = new HashMap<>();
         userData.put("email", userEmail);
         userData.put("bmi", bmi);
+        userData.put("timestamp", System.currentTimeMillis()); // Add timestamp
 
-        databaseRef.child(userId).setValue(userData)
+        databaseRef.child(userId).push().setValue(userData)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

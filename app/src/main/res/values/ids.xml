@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="bmiValue" type="id">bmiValue</item>
+    <item name="date" type="id">date</item>
+    <item name="bmiCategory" type="id">bmiCategory</item>
+</resources>

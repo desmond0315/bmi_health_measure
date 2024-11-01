@@ -50,7 +50,8 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Temporarily show a toast until BMIHistoryActivity is created
-                Toast.makeText(HomePageActivity.this, "BMI History coming soon!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePageActivity.this, BMIHistoryActivity.class);
+                startActivity(intent);
             }
         });
     }
