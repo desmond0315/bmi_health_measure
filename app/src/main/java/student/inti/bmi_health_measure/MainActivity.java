@@ -15,6 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
+// Add these new imports
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private EditText weightInput, heightInput;
@@ -52,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
                     double bmi = weight / (height * height);
                     bmiResultText.setText(String.format("Your BMI: %.2f", bmi));
 
-                    // Save user's email and BMI to Firebase Realtime Database
-                    saveUserData(bmi);
+                    // Call the new method instead of saveUserData
+                    String userEmail = mAuth.getCurrentUser().getEmail();
+                    saveBMIToFirebase(bmi, userEmail);
                 } else {
                     Toast.makeText(MainActivity.this, "Please enter both weight and height", Toast.LENGTH_SHORT).show();
                 }
@@ -63,28 +68,54 @@ public class MainActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate back to the HomePageActivity
                 finish();
             }
         });
     }
 
-    private void saveUserData(double bmi) {
-        String userId = mAuth.getCurrentUser().getUid();
-        String userEmail = mAuth.getCurrentUser().getEmail();
+    private void saveBMIToFirebase(double bmi, String userEmail) {
+        DatabaseReference bmiDataRef = FirebaseDatabase.getInstance()
+                .getReferenceFromUrl("https://bmi-health-measure-default-rtdb.firebaseio.com/")
+                .child("bmidata")
+                .push(); // This creates a new unique key
 
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("email", userEmail);
-        userData.put("bmi", bmi);
+        Map<String, Object> bmiData = new HashMap<>();
+        bmiData.put("bmi", bmi);
+        bmiData.put("email", userEmail);
 
-        databaseRef.child(userId).setValue(userData)
+        bmiDataRef.setValue(bmiData)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, "User data saved to database", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "BMI data saved successfully", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainActivity.this, "Failed to save user data to database", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Failed to save BMI data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        // Get the generated key
+        String userId = bmiDataRef.getKey();
+
+        // Also save user data
+        DatabaseReference userRef = FirebaseDatabase.getInstance()
+                .getReferenceFromUrl("https://bmi-health-measure-default-rtdb.firebaseio.com/")
+                .child("users")
+                .child(userId);
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("email", userEmail);
+        userData.put("userId", userId);
+        userData.put("dateCreated", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(new Date()));
+
+        userRef.setValue(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
