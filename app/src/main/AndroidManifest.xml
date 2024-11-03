@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Bmi_health_measure"
         tools:targetApi="31">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".BMIHistoryActivity"
             android:exported="false" />
         <activity

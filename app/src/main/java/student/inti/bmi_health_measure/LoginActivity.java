@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
-    private TextView signupRedirectText;
+    private TextView signupRedirectText, forgotPasswordText;
     private FirebaseAuth mAuth;
 
     @Override
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
         signupRedirectText = findViewById(R.id.signupRedirectText);
+        forgotPasswordText = findViewById(R.id.forgot_password);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +72,45 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
                 finish();
+            }
+        });
+
+        // Add Forgot Password functionality
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEditText.getText().toString().trim();
+
+                if (email.isEmpty()) {
+                    emailEditText.setError("Enter your email first");
+                    emailEditText.requestFocus();
+                    return;
+                }
+
+                mAuth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginActivity.this,
+                                            "Password reset email sent! Check your email",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(LoginActivity.this,
+                                            "Failed to send reset email: " + task.getException().getMessage(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+        // In your LoginActivity.java, add this after initializing views
+        forgotPasswordText = findViewById(R.id.forgot_password);
+
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
     }

@@ -109,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            saveUserToDatabase(firebaseUser, email);
+                            saveUserToDatabase(firebaseUser, email, password);  // Pass the password
                         }
                     } else {
                         showProgress(false);
@@ -118,12 +118,14 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
-    private void saveUserToDatabase(FirebaseUser firebaseUser, String email) {
+    // In SignupActivity.java, modify the saveUserToDatabase method:
+    private void saveUserToDatabase(FirebaseUser firebaseUser, String email, String password) {
         String userId = firebaseUser.getUid();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(new Date());
 
-        User user = new User(userId, email, currentDate);
+        // Create user with password (NOT RECOMMENDED!)
+        User user = new User(userId, email, password, currentDate);
 
         mDatabase.child(userId).setValue(user)
                 .addOnCompleteListener(task -> {
