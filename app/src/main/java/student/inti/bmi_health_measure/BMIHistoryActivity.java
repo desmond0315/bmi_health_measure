@@ -1,6 +1,7 @@
 package student.inti.bmi_health_measure;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -76,6 +77,12 @@ public class BMIHistoryActivity extends AppCompatActivity {
 
         // Load BMI history
         loadBMIHistory(currentUserEmail);
+        Button viewGraphButton = findViewById(R.id.viewGraphButton);
+        viewGraphButton.setOnClickListener(v -> {
+            Intent graphIntent = new Intent(BMIHistoryActivity.this, BMIGraphActivity.class);
+            startActivity(graphIntent);
+        });
+
     }
 
     private void loadBMIHistory(final String userEmail) {
