@@ -12,9 +12,11 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.card.MaterialCardView;
+
 
 public class HomePageActivity extends AppCompatActivity {
-    private Button bmiCalcButton, bmiHistoryButton;
+    private MaterialCardView bmiCalcButton, bmiHistoryButton, logoutButton; // Added logoutButton
     private TextView welcomeText;
     private SharedPreferences sharedPreferences;
     private String currentUser;
@@ -32,17 +34,18 @@ public class HomePageActivity extends AppCompatActivity {
         welcomeText = findViewById(R.id.welcomeText);
         bmiCalcButton = findViewById(R.id.bmiCalcButton);
         bmiHistoryButton = findViewById(R.id.bmiHistoryButton);
+        logoutButton = findViewById(R.id.logoutButton); // Initialize logoutButton
 
         // Set welcome message
-        welcomeText.setText("Welcome Back " + currentUser + "!");
+        welcomeText.setText(!currentUser.isEmpty() ? "Welcome Back, " + currentUser + "!" : "Welcome Back!");
 
         // Set up button click listeners
         bmiCalcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent to navigate to MainActivity
                 Intent intent = new Intent(HomePageActivity.this, MainActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -50,6 +53,26 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomePageActivity.this, BMIHistoryActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+        // Set up logout button click listener
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Clear shared preferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
+
+                // Show logout message
+                Toast.makeText(HomePageActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+                // Return to login activity
+                Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -63,18 +86,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            // Clear shared preferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
-
-            // Return to login activity
-            Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            return true;
-        }
+        // Handle action bar item clicks here.
         return super.onOptionsItemSelected(item);
     }
 }

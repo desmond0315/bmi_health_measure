@@ -1,8 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Bmi_health_measure" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.Bmi_health_measure" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- Define primary color, secondary color, and other theme attributes if needed -->
+        <item name="colorPrimary">@color/my_light_primary</item>
+        <item name="colorPrimaryVariant">@color/my_primary_variant</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/my_secondary_color</item>
     </style>
 
     <style name="Theme.Bmi_health_measure" parent="Base.Theme.Bmi_health_measure" />

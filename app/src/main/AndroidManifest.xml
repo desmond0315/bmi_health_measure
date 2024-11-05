@@ -29,7 +29,7 @@
         <activity
             android:name=".HomePageActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.Bmi_health_measure" />
         <activity
             android:name=".UserActivity"
             android:exported="false" />
