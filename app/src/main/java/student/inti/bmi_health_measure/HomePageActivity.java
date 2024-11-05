@@ -16,7 +16,7 @@ import com.google.android.material.card.MaterialCardView;
 
 
 public class HomePageActivity extends AppCompatActivity {
-    private MaterialCardView bmiCalcButton, bmiHistoryButton, logoutButton; // Added logoutButton
+    private MaterialCardView bmiCalcButton, bmiHistoryButton, logoutButton, bodyFatButton; // Added logoutButton
     private TextView welcomeText;
     private SharedPreferences sharedPreferences;
     private String currentUser;
@@ -35,6 +35,7 @@ public class HomePageActivity extends AppCompatActivity {
         bmiCalcButton = findViewById(R.id.bmiCalcButton);
         bmiHistoryButton = findViewById(R.id.bmiHistoryButton);
         logoutButton = findViewById(R.id.logoutButton); // Initialize logoutButton
+        bodyFatButton = findViewById(R.id.bodyFatButton);
 
         // Set welcome message
         welcomeText.setText(!currentUser.isEmpty() ? "Welcome Back, " + currentUser + "!" : "Welcome Back!");
@@ -58,6 +59,15 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
+        bodyFatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, BodyFatCalculatorActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
         // Set up logout button click listener
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +86,9 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
