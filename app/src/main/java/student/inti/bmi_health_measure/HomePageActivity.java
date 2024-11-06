@@ -1,5 +1,6 @@
 package student.inti.bmi_health_measure;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,14 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
+import android.widget.DatePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.Calendar;
 
 public class HomePageActivity extends AppCompatActivity {
-    private MaterialCardView bmiCalcButton, bmiHistoryButton, logoutButton, bodyFatButton; // Added logoutButton
+    private MaterialCardView bmiCalcButton, bmiHistoryButton, logoutButton, bodyFatButton, calendarButton;
     private TextView welcomeText;
     private SharedPreferences sharedPreferences;
     private String currentUser;
@@ -34,8 +36,9 @@ public class HomePageActivity extends AppCompatActivity {
         welcomeText = findViewById(R.id.welcomeText);
         bmiCalcButton = findViewById(R.id.bmiCalcButton);
         bmiHistoryButton = findViewById(R.id.bmiHistoryButton);
-        logoutButton = findViewById(R.id.logoutButton); // Initialize logoutButton
+        logoutButton = findViewById(R.id.logoutButton);
         bodyFatButton = findViewById(R.id.bodyFatButton);
+        calendarButton = findViewById(R.id.calendarButton);
 
         // Set welcome message
         welcomeText.setText(!currentUser.isEmpty() ? "Welcome Back, " + currentUser + "!" : "Welcome Back!");
@@ -87,8 +90,33 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-    }
+        // Set up calendar button click listener
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current date
+                final Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+                // Create DatePickerDialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        HomePageActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                                // Show the selected date (you can use it as needed)
+                                String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                                Toast.makeText(HomePageActivity.this, "Selected Date: " + selectedDate, Toast.LENGTH_LONG).show();
+                            }
+                        }, year, month, day);
+
+                // Show the date picker dialog
+                datePickerDialog.show();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
