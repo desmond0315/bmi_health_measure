@@ -1,5 +1,6 @@
 package student.inti.bmi_health_measure;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
@@ -112,7 +113,7 @@ public class BMIHistoryActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot userDataSnapshot) {
                                     String dateCreated = userDataSnapshot.child("dateCreated").getValue(String.class);
 
-                                    String historyEntry = String.format("Date: %s\nBMI: %.1f\nCategory: %s",
+                                    @SuppressLint("DefaultLocale") String historyEntry = String.format("Date: %s\nBMI: %.1f\nCategory: %s",
                                             dateCreated != null ? dateCreated : "N/A",
                                             bmi,
                                             category);
